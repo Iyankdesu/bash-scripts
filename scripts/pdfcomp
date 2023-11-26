@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Description : bash script to compress a pdf file using ghostscript
+
+# Function to display usage information
+function display_help {
+    echo "Usage: $(basename $0) <input_file>"
+}
+
+# Check if ghostscript is installed
+if ! command -v gs &> /dev/null; then
+    echo "GhostScript is not installed. Please install GhostScript first."
+    exit 1
+fi
+
+# Parse command line arguments
+if [[ $# -eq 0 ]]; then
+    display_help
+    exit 1
+fi
+
+for file in "$@"; do
+  # Check file extensions
+  if [[ "$file" == *.pdf ]]; then
+    # Do compression with ghostscript
+    gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dDownsampleColorImages=true -dColorImageResolution=105 -dNOPAUSE -dBATCH -sOutputFile="compressed_${file}" "$file"
+  else
+    echo "$file is not a pdf file."
+  fi
+done
+
+echo "Done!"
