@@ -1,0 +1,65 @@
+#!/bin/bash
+
+# Description : system information utility for debian/ubuntu
+
+# Set ANSI color codes
+f=3
+b=4
+
+# Loop through foreground and background color codes
+for j in f b; do
+  for i in {0..7}; do
+    printf -v $j$i %b "\e[${!j}${i}m"
+  done
+done
+
+# Define color variables for text
+BLACK='\e[30m'
+RED='\e[31m'
+GREEN='\e[32m'
+YELLOW='\e[33m'
+BLUE='\e[34m'
+MAGENTA='\e[35m'
+CYAN='\e[36m'
+WHITE='\e[37m'
+
+# Set text styles
+TEXT_BOLD=$'\e[1m'
+RESET=$'\e[0m'
+
+# Items to display
+STYLE=$TEXT_BOLD$RESET
+
+# Get distro information
+DISTRO="$STYLE $(lsb_release -ds)"
+
+# Get kernel information
+KERNEL="$STYLE $(uname -rs)"
+
+# Get uptime information
+UPTIME="$STYLE $(uptime -p | sed 's/up \(.*\)/\1/')"
+
+# Get package count
+PACKAGES="$STYLE $(dpkg --get-selections | wc -l)"
+
+# Get CPU series information
+CPU="$STYLE $(cat /proc/cpuinfo | grep "model name" | head -n 1 | cut -d ':' -f 2-)"
+
+# Get memory usage information
+MEMORY="$STYLE $(free -h | awk '/Mem/{print $3"/"$2}')"
+
+# Get shell information
+SHELL="$STYLE $(basename $SHELL)"
+
+# Display system information
+cat << EOF
+
+ $TEXT_BOLD $f1 OS $DISTRO
+ $TEXT_BOLD $f3 Kernel $KERNEL
+ $TEXT_BOLD $f2 Uptime $UPTIME
+ $TEXT_BOLD $f5 Packages $PACKAGES
+ $TEXT_BOLD $f4 Shell $SHELL
+ $TEXT_BOLD $f1 CPU $CPU
+ $TEXT_BOLD $f3 Memory $MEMORY
+
+EOF
