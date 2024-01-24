@@ -6,4 +6,5 @@ A repository contains a collection of various bash script designed to provide ad
 
 - `cliptrim` - trim video using ffmpeg
 - `pdfcomp` - compress pdf file using ghostscript
-- `debfetch` - system information utility for debian/ubuntu 
+- `debfetch` - system information utility for debian/ubuntu
+- `arto` - universal archiving tools
