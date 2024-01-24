@@ -12,8 +12,15 @@ display_help() {
     echo "      create archive file"
     echo "  l, -l, list"
     echo "      list contents of the archive file"
+    echo "  p, -p, print"
+    echo "      print supported files format"
     echo "  h, -h, help"
     echo "      show this help message"
+}
+
+display_supported_files() {
+    echo "Supported files: "
+    echo -e "  *.tar\n  *.tar.xz\n  *.tar.bz2\n  *.tar.tbz2\n  *.tar.gz\n  *.tgz\n  *.rar\n  *.7z\n  *.zip"
 }
 
 if [ $# -lt 1 ]; then
@@ -32,6 +39,10 @@ case "$1" in
         ;;
     l|-l|list)
         OPERATION="list"
+        ;;
+    p|-p|print)
+        display_supported_files
+        exit 0
         ;;
     h|-h|help)
         display_help
