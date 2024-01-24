@@ -1,0 +1,68 @@
+#!/bin/bash
+
+# description : archiving tools utility
+
+display_help() {
+    echo "Usage: "
+    echo "  $(basename $0) [OPTION] [FILE]"
+    echo "Options: "
+    echo "  x, -x, extract"
+    echo "      extract specified archive file"
+    echo "  c, -c, create"
+    echo "      create archive file"
+    echo "  l, -l, list"
+    echo "      list contents of the archive file"
+    echo "  h, -h, help"
+    echo "      show this help message"
+}
+
+if [ $# -lt 1 ]; then
+    display_help
+    exit 1
+fi
+
+OPERATION=""
+
+case "$1" in
+    x|-x|extract)
+        OPERATION="extract"
+        ;;
+    c|-c|create)
+        OPERATION="create"
+        ;;
+    l|-l|list)
+        OPERATION="list"
+        ;;
+    h|-h|help)
+        display_help
+        exit 0
+        ;;
+    *)
+        echo "Invalid option: $1"
+        ;;
+esac
+
+if [ ! -f "$2" ]; then
+    echo "Please provide a file!"
+    exit 1
+fi
+
+if [ "$OPERATION" == "extract" ]; then
+    case $2 in
+        *.tar.xz)   tar -xvf "$2"                         ;;
+        *.tar.bz2)  tar -jxvf "$2"                        ;;
+        *.tar.gz)   tar -zxvf "$2"                        ;;
+        *.tar)      tar -xvf "$2"                         ;;
+        *.tbz2)     tar -jxvf "$2"                        ;;
+        *.tgz)      tar -zxvf "$2"                        ;;
+        *.rar)      7z x "$2"                             ;;
+        *.7z)       7z x "$2"                             ;;
+        *.zip)      unzip "$2"                            ;;
+        *)          echo "'$2' cannot be extracted"       ;;
+    esac
+elif [ "$OPERATION" == "create" ]; then
+    echo "add later"
+elif [ "$OPERATION" == "list" ]; then
+    echo "also add later"
+fi 
+
